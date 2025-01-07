@@ -1,6 +1,12 @@
 const BASE_URL = "https://api.discountdb.ch/api/v1";
 
 export type DiscountType = "PERCENTAGE_OFF" | "FIXED_AMOUNT" | "BOGO" | "FREE_SHIPPING";
+export enum DiscountTypeEnum {
+	PERCENTAGE_OFF = "PERCENTAGE_OFF",
+	FIXED_AMOUNT = "FIXED_AMOUNT",
+	BOGO = "BOGO",
+	FREE_SHIPPING = "FREE_SHIPPING",
+}
 
 export interface CouponJSON {
 	id: number;
@@ -210,4 +216,33 @@ export async function downVoteCoupon(couponId: number): Promise<void> {
 	if (!res.ok) {
 		throw new Error(`Failed to downvote coupon: ${res.statusText}`);
 	}
+}
+
+export type Merchant = {
+	merchant_name: string;
+	merchant_url: string[];
+}
+
+export type MerchantList = {
+	data: Merchant[];
+	total: number;
+};
+
+export async function getMerchants(): Promise<MerchantList> {
+	const res = await fetch(`${BASE_URL}/coupons/merchants`);
+
+	if (!res.ok) {
+		throw new Error(`Failed to fetch merchants: ${res.statusText}`);
+	}
+
+	const response = await res.json();
+
+	if (!Array.isArray(response.data)) {
+		response.data = [];
+	}
+
+	return {
+		data: response.data,
+		total: response.total
+	};
 }
