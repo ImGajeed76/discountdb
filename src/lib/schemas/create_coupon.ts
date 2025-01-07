@@ -10,8 +10,8 @@ export const createCouponSchema = z.object({
 	merchant_name: z.string().min(1).max(100),
 	merchant_url: z.string().url(),
 
-	start_date: z.date().optional(),
-	end_date: z.date().optional(),
+	start_date: z.string().optional(),
+	end_date: z.string().optional(),
 	terms_conditions: z.string().min(1).max(500).optional(),
 	minimum_purchase_amount: z.number().min(0).optional(),
 	maximum_discount_amount: z.number().min(0).optional(),
