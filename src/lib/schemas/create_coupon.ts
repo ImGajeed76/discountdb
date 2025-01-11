@@ -19,7 +19,7 @@ export const createCouponSchema = z.object({
 	categories: z.array(z.string().min(1).max(20)).max(10).optional(),
 	tags: z.array(z.string().min(1).max(20)).max(15).optional(),
 	regions: z.array(z.string().min(1).max(20)).max(50).optional(),
-	store_type: z.enum(["online", "in_store", "both"]).optional(),
+	store_type: z.enum(["online", "in_store", "both", '']).optional(),
 }).refine(
 	(data) => {
 		// Skip validation if either date is missing

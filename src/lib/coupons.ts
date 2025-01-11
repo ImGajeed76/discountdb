@@ -246,3 +246,124 @@ export async function getMerchants(): Promise<MerchantList> {
 		total: response.total
 	};
 }
+
+export type CategoriesResponse = {
+	data: string[];
+	total: number;
+}
+
+export async function getCategories(): Promise<CategoriesResponse> {
+	const res = await fetch(`${BASE_URL}/coupons/categories`);
+
+	if (!res.ok) {
+		throw new Error(`Failed to fetch categories: ${res.statusText}`);
+	}
+
+	const response = await res.json();
+
+	if (!Array.isArray(response.data)) {
+		response.data = [];
+	}
+
+	return {
+		data: response.data,
+		total: response.total
+	};
+}
+
+export type TagsResponse = {
+	tags: string[];
+	total: number;
+}
+
+export async function getTags(): Promise<TagsResponse> {
+	const res = await fetch(`${BASE_URL}/coupons/tags`);
+
+	if (!res.ok) {
+		throw new Error(`Failed to fetch tags: ${res.statusText}`);
+	}
+
+	const response = await res.json();
+
+	if (!Array.isArray(response.tags)) {
+		response.tags = [];
+	}
+
+	return {
+		tags: response.tags,
+		total: response.total
+	};
+}
+
+export type RegionsResponse = {
+	regions: string[];
+	total: number;
+}
+
+export async function getRegions(): Promise<RegionsResponse> {
+	const res = await fetch(`${BASE_URL}/coupons/regions`);
+
+	if (!res.ok) {
+		throw new Error(`Failed to fetch regions: ${res.statusText}`);
+	}
+
+	const response = await res.json();
+
+	if (!Array.isArray(response.regions)) {
+		response.regions = [];
+	}
+
+	return {
+		regions: response.regions,
+		total: response.total
+	};
+}
+
+export interface CouponSuggestion {
+	code: string;
+	title: string;
+	description: string;
+	discount_value: number;
+	discount_type: DiscountType;
+	merchant_name: string;
+	merchant_url: string;
+
+	start_date?: string;
+	end_date?: string;
+	terms_conditions?: string;
+	minimum_purchase_amount?: number;
+	maximum_discount_amount?: number;
+
+	categories?: string[];
+	tags?: string[];
+	regions?: string[];
+	store_type?: string;
+}
+
+export type SuggestionResponse = {
+	id: number;
+	score: number;
+	created_at: string;
+}
+
+export async function suggestCoupon(coupon: CouponSuggestion): Promise<SuggestionResponse> {
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	Object.keys(coupon).forEach((key) => coupon[key] === undefined && delete coupon[key]);
+
+	console.log(JSON.stringify(coupon));
+
+	const res = await fetch(`${BASE_URL}/coupons`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(coupon)
+	});
+
+	if (!res.ok) {
+		throw new Error(`Failed to suggest coupon: ${res.statusText}`);
+	}
+
+	return res.json();
+}
