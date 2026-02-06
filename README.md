@@ -11,6 +11,8 @@ various services and retailers. Our mission is to make savings accessible to eve
 
 📚 **API Repo**: [https://github.com/ImGajeed76/discountdb-api](https://github.com/ImGajeed76/discountdb-api)
 
+📄 **Portfolio**: [Check it out on my website](https://oseifert.ch/projects/discountdb-9113)
+
 ## Technology Stack 💻
 
 - **Frontend**: SvelteKit with shadcn-svelte components
